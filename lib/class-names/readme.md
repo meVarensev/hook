@@ -32,7 +32,6 @@ interface ButtonProps {
     additional?: string[];
     onClick?: () => void;
     children: React.ReactNode;
-    isDisabled?: boolean;
 }
 
 interface ExtendedMods extends Mods {
@@ -50,13 +49,14 @@ const Button: React.FC<ButtonProps> = ({
                                            children,
                                            isDisabled
                                        }) => {
-    const buttonClassNames = classNames(styles.button, {
+    const ExtendedMods = {
         [styles.primary]: mods.primary,
         [styles.secondary]: mods.secondary,
         [styles.small]: mods.small,
         [styles.medium]: mods.medium,
         [styles.large]: mods.large,
-    }, additional);
+    }
+    const buttonClassNames = classNames(styles.button, ExtendedMods , additional);
 
     return (
         <button className={buttonClassNames} onClick={onClick} disabled={isDisabled}>
