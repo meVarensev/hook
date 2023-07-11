@@ -29,7 +29,7 @@ interface ButtonProps {
     className?: string;
     isDisabled?: boolean;
     mods?: ExtendedMods;
-    additional?: string[];
+    additionalClassName?: string[];
     onClick?: () => void;
     children: React.ReactNode;
 }
@@ -44,7 +44,7 @@ interface ExtendedMods extends Mods {
 
 const Button: React.FC<ButtonProps> = ({
                                            mods = {},
-                                           additional = [],
+                                           additionalClassName = [],
                                            onClick,
                                            children,
                                            isDisabled
@@ -56,7 +56,7 @@ const Button: React.FC<ButtonProps> = ({
         [styles.medium]: mods.medium,
         [styles.large]: mods.large,
     }
-    const buttonClassNames = classNames(styles.button, ExtendedMods , additional);
+    const buttonClassNames = classNames(styles.button, ExtendedMods , additionalClassName);
 
     return (
         <button className={buttonClassNames} onClick={onClick} disabled={isDisabled}>
@@ -128,7 +128,7 @@ function App() {
 
             <Button
                 mods={{secondary: true, medium: true}}
-                additional={['custom-button']}
+                additionalClassName={['custom-button']}
                 onClick={() => console.log('Button clicked')}
                 isDisabled={true}
             >
