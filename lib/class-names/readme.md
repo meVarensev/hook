@@ -51,12 +51,12 @@ export default Button;
 
 ## Предположим, что вы использовали компонент Button следующим образом:
 
-```typescript
+```javascript
 <Button className="custom-button" isActive={true} isDisabled={false} size="large">
   Click me
 </Button>
 ```
 ## Результатом будет следующий HTML-код:
-```typescript
+```html
 <button class="button active large custom-button">Click me</button>
 ```
