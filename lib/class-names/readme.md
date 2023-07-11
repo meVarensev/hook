@@ -4,7 +4,7 @@
 
 ## Использование
 
-```
+```typescript
 import React from 'react';
 import { classNames } from './classNames';
 
@@ -51,12 +51,12 @@ export default Button;
 
 ## Предположим, что вы использовали компонент Button следующим образом:
 
-```
+```typescript
 <Button className="custom-button" isActive={true} isDisabled={false} size="large">
   Click me
 </Button>
 ```
 ## Результатом будет следующий HTML-код:
-```
+```typescript
 <button class="button active large custom-button">Click me</button>
 ```
