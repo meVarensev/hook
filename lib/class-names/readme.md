@@ -28,6 +28,7 @@ interface ButtonProps {
   isActive?: boolean;
   isDisabled?: boolean;
   size?: 'small' | 'medium' | 'large';
+  children: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -40,7 +41,6 @@ const Button: React.FC<ButtonProps> = ({
   const baseClass = 'button';
   const modifiers = {
     active: isActive,
-    disabled: isDisabled,
     [size]: true,
   };
 
