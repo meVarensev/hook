@@ -34,7 +34,7 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({
   className = "",
   isActive = "",
-  isDisabled = "",
+  isDisabled ,
   size = 'medium',
   children,
 }) => {
