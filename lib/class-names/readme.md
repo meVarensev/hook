@@ -1,7 +1,7 @@
 # Описание
 
 ```typescript
-type Mods = Record<string, boolean | string>;
+export type Mods = Record<string, boolean | string>;
 
 export const classNames = (
     cls: string,
@@ -20,58 +20,136 @@ export const classNames = (
 ## Использование
 
 ```typescript
+// my_button.tsx
 import React from 'react';
-import { classNames } from './classNames';
+import {classNames, Mods} from './classNames';
+import styles from './Button.module.css';
 
 interface ButtonProps {
-  className?: string;
-  isActive?: boolean;
-  isDisabled?: boolean;
-  size?: 'small' | 'medium' | 'large';
-  children: React.ReactNode;
+    className?: string;
+    isDisabled?: boolean;
+    mods?: ExtendedMods;
+    additional?: string[];
+    onClick?: () => void;
+    children: React.ReactNode;
+    isDisabled?: boolean;
+}
+
+interface ExtendedMods extends Mods {
+    primary?: boolean;
+    secondary?: boolean;
+    small?: boolean;
+    medium?: boolean;
+    large?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
-  className = "",
-  isActive = "",
-  isDisabled ,
-  size = 'medium',
-  children,
-}) => {
-  const baseClass = 'button';
-  const modifiers = {
-    active: isActive,
-    [size]: true,
-  };
+                                           mods = {},
+                                           additional = [],
+                                           onClick,
+                                           children,
+                                           isDisabled
+                                       }) => {
+    const buttonClassNames = classNames(styles.button, {
+        [styles.primary]: mods.primary,
+        [styles.secondary]: mods.secondary,
+        [styles.small]: mods.small,
+        [styles.medium]: mods.medium,
+        [styles.large]: mods.large,
+    }, additional);
 
-  const buttonClasses = classNames(baseClass, modifiers, [className]);
-
-  return (
-    <button className={buttonClasses} disabled={isDisabled}>
-      {children}
-    </button>
-  );
+    return (
+        <button className={buttonClassNames} onClick={onClick} disabled={isDisabled}>
+            {children}
+        </button>
+    );
 };
 
 export default Button;
 ```
+```css
+/* Button.module.css */
 
-В этом примере компонент Button принимает несколько пропсов, включая className, isActive, isDisabled и size. Он использует функцию classNames для создания строки с классами CSS для кнопки.
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-Когда компонент рендерится, он применяет базовый класс 'button', а также добавляет модификаторы в зависимости от переданных пропсов. Если пропс isActive равен true, добавляется модификатор 'active'. Если пропс isDisabled равен true, добавляется модификатор 'disabled'. И, наконец, используется значение пропса size в качестве имени модификатора (например, 'small', 'medium' или 'large').
+.primary {
+    background-color: #007bff;
+    color: #fff;
+}
 
-Строка с классами затем применяется к кнопке с помощью атрибута className. Если пропс isDisabled равен true, кнопка будет отключена.
+.secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
 
-Таким образом, при использовании компонента Button можно передать классы, задать активное/неактивное состояние и определить размер кнопки, в зависимости от переданных пропсов.
+.large {
+    padding: 30px 60px;
+    font-size: 18px;
+}
+
+
+.medium{
+    padding: 15px 30px;
+    font-size: 16px;
+}
+.small {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+
+.additional-class {
+    /* Ваши дополнительные стили */
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+```
+
+```typescript
+import Button from "./my_button.tsx"
+
+function App() {
+
+    return (
+        <div>
+            <Button mods={{primary: true}} onClick={() => console.log('Button clicked')}>
+                Primary Button
+            </Button>
+
+            <Button
+                mods={{secondary: true, medium: true}}
+                additional={['custom-button']}
+                onClick={() => console.log('Button clicked')}
+                isDisabled={true}
+            >
+                Secondary Large Button
+            </Button>
+        </div>
+    )
+}
+
+export default App
+```
+
 
 ## Предположим, что вы использовали компонент Button следующим образом:
 
 ```javascript
-<Button className="custom-button" isActive={true} isDisabled={false} size="large">
-  Click me
-</Button>
+ <Button mods={{primary: true}} onClick={() => console.log('Button clicked')}>
+                Primary Button
+ </Button>
 ```
 ## Результатом будет следующий HTML-код:
 ```html
-<button class="button active large custom-button">Click me</button>
+<button class="_button_uu9hq_5 _primary_uu9hq_23">Primary Button</button>
 ```
