@@ -1,5 +1,20 @@
 # Описание
 
+```typescript
+type Mods = Record<string, boolean | string>;
+
+export const classNames = (
+    cls: string,
+    mods: Mods,
+    additional: string[]
+): string =>
+    [
+        cls,
+        ...additional.filter(Boolean),
+        ...Object.keys(mods).filter((key) => mods[key])
+    ].join(' ');
+```
+
 Этот модуль предоставляет функцию classNames, которая помогает создавать строку с классами CSS на основе заданных параметров. Она принимает имя базового класса, объект с модификаторами и дополнительный массив классов и возвращает строку с классами, разделенными пробелами.
 
 ## Использование
