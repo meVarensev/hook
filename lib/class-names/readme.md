@@ -32,9 +32,9 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
-  className,
-  isActive,
-  isDisabled,
+  className = "",
+  isActive = "",
+  isDisabled = "",
   size = 'medium',
   children,
 }) => {
