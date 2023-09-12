@@ -43,8 +43,8 @@ const cachedFetch = cachingDecorator(fetchData);
 
 
 async function makeApiRequests() {
-    const url1 = "https://example.com/api/data/1";
-    const url2 = "https://example.com/api/data/2";
+    const url1 = "https://jsonplaceholder.typicode.com/todos/1";
+    const url2 = "https://jsonplaceholder.typicode.com/todos/2";
 
     try {
         console.log(await cachedFetch<number>(url1)); // Запрос и кэширование для URL1
