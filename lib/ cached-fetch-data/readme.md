@@ -1,9 +1,9 @@
-## Описание
+# Описание
 
 `cachedFetch` - это функция-декоратор, предназначенная для выполнения запросов к API с возможностью кэширования
 результатов, чтобы избежать повторных запросов к одним и тем же URL-ам.
 
-### Использование
+## Использование
 
 ```typescript
 import axios, { AxiosResponse } from 'axios';
@@ -41,11 +41,7 @@ function cachingDecorator<T>(apiFunction: (url: string) => Promise<T>) {
 
 const cachedFetch = cachingDecorator(fetchData);
 
-/**
- * Пример использования `cachedFetch` можно найти в [этом codesandbox](https://codesandbox.io/s/quirky-shamir-kqcldj?file=/src/index.mjs:592-636).
- *
- * Идея для `cachedFetch` вдохновлена [статьей на learn.javascript](https://learn.javascript.ru/call-apply-decorators#prozrachnoe-keshirovanie).
- */
+
 async function makeApiRequests() {
     const url1 = "https://example.com/api/data/1";
     const url2 = "https://example.com/api/data/2";
@@ -64,16 +60,23 @@ async function makeApiRequests() {
 makeApiRequests();
 
 ```
+ 
+## Пример использования `cachedFetch` 
+можно найти в [этом codesandbox](https://codesandbox.io/s/quirky-shamir-kqcldj?file=/src/index.mjs:592-636).
+ 
+## Идея для `cachedFetch` 
+вдохновлена [статьей на learn.javascript](https://learn.javascript.ru/call-apply-decorators#prozrachnoe-keshirovanie).
+ 
 
-### Параметры
+## Параметры
 
 - `url` (string): URL-адрес, по которому нужно выполнить запрос к API.
 
-### Возвращаемое значение
+## Возвращаемое значение
 
 Функция `cachedFetch` возвращает кэшированный результат запроса к API. Тип результата зависит от типа данных, указанного
 при вызове `cachedFetch`.
 
-### Обработка ошибок
+## Обработка ошибок
 
 Функция `cachedFetch` также обрабатывает ошибки запросов к API и выбрасывает их для дальнейшей обработки.
