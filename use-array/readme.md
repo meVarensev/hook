@@ -1,9 +1,12 @@
+## Описание
+
 ```typescript
 import React, { useState, useCallback } from 'react';
 
 type UseArrayActions<T> = {
     push: (item: T) => void;
     removeByIndex: (index: number) => void;
+    removeById: (id: string) => void;
 };
 
 /**
@@ -12,7 +15,7 @@ type UseArrayActions<T> = {
  * @param initialValue Начальное значение массива.
  * @returns Объект, содержащий текущее значение массива и функции для его изменения.
  */
-export function useArray<T>(initialValue: T[]): { value: T[] } & UseArrayActions<T> {
+export function useArray<T extends { id: string }>(initialValue: T[]): { value: T[] } & UseArrayActions<T> {
     const [value, setValue] = useState(initialValue);
 
     /**
@@ -33,33 +36,51 @@ export function useArray<T>(initialValue: T[]): { value: T[] } & UseArrayActions
         setValue(prev => prev.filter((_, i) => i !== index));
     }, []);
 
-    return { value, push, removeByIndex };
+    /**
+     * Удаляет элемент из массива по ID.
+     *
+     * @param id ID элемента для удаления.
+     */
+    const removeById = useCallback((id: string) => {
+        setValue(prev => prev.filter(item => item.id !== id));
+    }, []);
+
+    return { value, push, removeByIndex, removeById };
 }
 ```
 
 ## Использование
 
-Для использования хука `useArray`, вызовите его внутри вашего функционального компонента. Вот пример, как это можно сделать:
+Использование хука `useArray` остается без изменений, как описано в предыдущих ответах. Однако теперь предполагается, что каждый элемент массива имеет свойство `id`, по которому будет производиться удаление с использованием функции `removeById`.
 
 ```typescript
 import React from 'react';
 import { useArray } from './useArray';
 
+interface Item {
+    id: string;
+    // Другие свойства элемента
+}
+
 const MyComponent: React.FC = () => {
     // Используем хук useArray
-    const { value: items, push, removeByIndex } = useArray<string>(['item 1', 'item 2', 'item 3']);
+    const { value: items, push, removeByIndex, removeById } = useArray<Item>([
+        { id: '1', /* Другие свойства */ },
+        { id: '2', /* Другие свойства */ },
+        // ...
+    ]);
 
     return (
         <div>
             <ul>
-                {items.map((item, index) => (
-                    <li key={index}>
-                        {item}
-                        <button onClick={() => removeByIndex(index)}>Remove</button>
+                {items.map(item => (
+                    <li key={item.id}>
+                        {item.id}
+                        <button onClick={() => removeById(item.id)}>Remove</button>
                     </li>
                 ))}
             </ul>
-            <button onClick={() => push(`item ${items.length + 1}`)}>Add Item</button>
+            <button onClick={() => push({ id: `${items.length + 1}`, /* Другие свойства */ })}>Add Item</button>
         </div>
     );
 };
@@ -67,4 +88,4 @@ const MyComponent: React.FC = () => {
 export default MyComponent;
 ```
 
-Этот код будет использовать  хук `useArray` для управления массивом элементов. 
+Пожалуйста, убедитесь, что каждый элемент массива имеет уникальное свойство `id`, чтобы функция `removeById` могла корректно идентифицировать элемент для удаления.
